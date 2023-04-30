@@ -98,6 +98,7 @@
 (require 'data-fontawesome-4         "./data/data-fontawesome-4")
 (require 'data-fluentui-system-icons "./data/data-fluentui-system-icons")
 (require 'data-material-icons        "./data/data-material-icons")
+(require 'data-clockface             "./data/data-clockface")
 
 (require 'all-the-icons-faces)
 
@@ -1151,6 +1152,11 @@ FIND-ICON-IMAGE-FUNCTION."
                           b))))))
     (format "%s/materialicons%s/%spx.svg" name style size)))
 
+(defun all-the-icons--clockface-path (name dir _ &rest args)
+  ""
+  (let* ((style (or (plist-get args :style) "")))
+    (format "clockface%s/clock_%s.svg" style name)))
+
 (all-the-icons-define-icon devopicons all-the-icons-data/devopicons-alist
                            :svg-doc-processor 'all-the-icons--remove-fill-style
                            :padding 1)
@@ -1179,6 +1185,9 @@ FIND-ICON-IMAGE-FUNCTION."
 
 (all-the-icons-define-icon material-icons all-the-icons-data/material-icons-alist
                            :svg-path-finder 'all-the-icons--material-icons-path)
+
+(all-the-icons-define-icon clockface all-the-icons-data/clockface-alist
+                           :svg-path-finder 'all-the-icons--clockface-path)
 
 ;;;###autoload
 (defun all-the-icons-debug ()
@@ -1232,6 +1241,11 @@ FIND-ICON-IMAGE-FUNCTION."
   (dolist (style '(nil outlined round sharp twotone))
     (dolist (entry all-the-icons-data/material-icons-alist)
       (when-let ((icon (ignore-errors (all-the-icons-material-icons (car entry) :style style))))
+        (insert icon))))
+
+  (dolist (style '(nil fathands fatrect fatrectsolid fatsolid fatsquare fatsquaresolid rect rectsolid solid square squaresolid))
+    (dolist (entry all-the-icons-data/clockface-alist)
+      (when-let ((icon (ignore-errors (all-the-icons-clockface (car entry) :style style))))
         (insert icon)))))
 
 (provide 'all-the-icons)
